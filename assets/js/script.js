@@ -5,6 +5,7 @@ const searchInputEl = document.querySelector("#search-input");
 const searchFormEl = document.querySelector("#search-form");
 const searchHistoryContainerEl = document.querySelector("#search-history");
 const todayWeatherEl = document.querySelector("#today-weather");
+const forecastWeatherEl = document.querySelector("#forecast-weather")
                                                 
 
 const localStorageKey = "searchHistory";
@@ -27,9 +28,6 @@ function getWeatherAPI(){
             // console.log(data.name);
             // console.log(data.dt);
             // console.log(data.weather[0].icon);
-
-            //https://openweathermap.org/img/wn/04n@2x.png
-
             // console.log(data.main.temp);
             // console.log(data.wind.speed);
             // console.log(data.main.humidity);
@@ -91,7 +89,54 @@ function getWeatherForecast(lat,lon){
         return response.json();  
     })
     .then(function(data){
-        console.log(data);
+        console.log(data.list);
+        //console.log(data.list.length);
+        //console.log(data.list[data.list.length - 1]);
+        
+        //const secondsAday = 86400;
+        const arrayInterval = data.list.length/5; //8
+        
+
+        //console.log(arrayInterval)
+
+            // console.log(data.dt);
+            // console.log(data.weather[0].icon);
+            // console.log(data.main.temp);
+            // console.log(data.wind.speed);
+            // console.log(data.main.humidity);
+
+        const forecastListEl = document.createElement("ol");
+         for (var i = data.list.length-1; i >= 0; i=i-arrayInterval){
+            console.log(i);
+
+            const date = dayjs.unix(data.list[i].dt).format('D/M/YYYY')
+
+            const listEl = document.createElement("li");
+            const forecastDateEl = document.createElement("p");
+            const forecastTemp = document.createElement("p");
+            const forecastWindEl = document.createElement("p");
+            const forecastHumidityEl = document.createElement("p");
+            const forecastWeatherConditionImageEl = document.createElement("img");
+
+
+            forecastDateEl.textContent = `${date}`;
+            forecastTemp.textContent = `${data.list[i].main.temp} °F`;
+            forecastWindEl.textContent = `${data.list[i].wind.speed} MPH`;
+            forecastHumidityEl.textContent = `${data.list[i].main.humidity} %` ;
+            forecastWeatherConditionImageEl.setAttribute("src",`https://openweathermap.org/img/wn/${data.list[i].weather[0].icon}@2x.png`);
+
+            listEl.appendChild(forecastDateEl);
+            listEl.appendChild(forecastWeatherConditionImageEl);
+            listEl.appendChild(forecastTemp);
+            listEl.appendChild(forecastWindEl);
+            listEl.appendChild(forecastHumidityEl);
+
+            forecastListEl.append(listEl);
+            forecastWeatherEl.appendChild(forecastListEl);
+
+         }
+        
+
 
 
 
