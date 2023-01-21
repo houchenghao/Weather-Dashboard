@@ -4,7 +4,7 @@ const units = "imperial";
 const searchInputEl = document.querySelector("#search-input");
 const searchFormEl = document.querySelector("#search-form");
 const searchHistoryContainerEl = document.querySelector("#search-history");
-var todayWeatherEl = document.querySelector("#today-weather");
+const todayWeatherEl = document.querySelector("#today-weather");
                                                 
 
 const localStorageKey = "searchHistory";
@@ -23,7 +23,7 @@ function getWeatherAPI(){
             return response.json();  
         })
         .then(function(data){
-            // console.log(data);
+             //console.log(data);
             // console.log(data.name);
             // console.log(data.dt);
             // console.log(data.weather[0].icon);
@@ -40,42 +40,38 @@ function getWeatherAPI(){
                 todayWeatherEl.removeChild(todayWeatherEl.lastElementChild);
             }
             
-            //const todayNameDayIconEl = document.createElement("p");
-            //const todayTempEl = document.createElement("p");
-            //const todayWindEl = document.createElement("p");
-            //const todayHumidityEl = document.createElement("p");
-            var weatherImageEl = document.createElement("img");
+            const todayCityDateEl = document.createElement("p");
+            const todayTempEl = document.createElement("p");
+            const todayWindEl = document.createElement("p");
+            const todayHumidityEl = document.createElement("p");
+            const weatherImageEl = document.createElement("img");
 
-           //todayNameDayIconEl.textContent = `${data.name} ${date}`;
-            //todayTempEl.textContent = `${data.main.temp} °F`;
-            //todayWindEl.textContent = `${data.wind.speed} MPH`
-            //todayHumidityEl.textContent = `${data.main.humidity} %`
 
-            
-            //weatherImageEl.setAttribute("width","50px");
-            //weatherImageEl.setAttribute("height","50px");
+            weatherImageEl.setAttribute("src",`https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`);
+            weatherImageEl.setAttribute("width","50px");
+            weatherImageEl.setAttribute("height","50px");
 
             
+            todayCityDateEl.textContent = `${data.name} ${date}`;
+            todayTempEl.textContent = `${data.main.temp} °F`;
+            todayWindEl.textContent = `${data.wind.speed} MPH`
+            todayHumidityEl.textContent = `${data.main.humidity} %`
 
-            //todayWeatherEl.appendChild(todayNameDayIconEl);
-            todayWeatherEl.appendChild(weatherImageEl);
+            todayCityDateEl.append(weatherImageEl);
 
-            weatherImageEl.setAttribute("scr","https://openweathermap.org/img/wn/01d@2x.png");
+            todayWeatherEl.appendChild(todayCityDateEl);
+            //todayWeatherEl.appendChild(weatherImageEl);
+            todayWeatherEl.appendChild(todayTempEl);
+            todayWeatherEl.appendChild(todayWindEl);
+            todayWeatherEl.appendChild(todayHumidityEl);
 
-            //weatherImageEl.style.visibility = "visible";
-
-            //todayWeatherEl.setAttribute("style", "margin:auto; width:50%; text-align:center;");
-            //todayWeatherEl.appendChild(todayTempEl);
-            //todayWeatherEl.appendChild(todayWindEl);
-           // todayWeatherEl.appendChild(todayHumidityEl);
-
-        //console.log(data.coord);
-        //console.log(data.coord.lon);
-        //console.log(data.coord.lat);
+            //console.log(data.coord);
+            //console.log(data.coord.lon);
+            //console.log(data.coord.lat);
         
-        displayHistory(data.name);
+            displayHistory(data.name);
 
-        getWeatherForecast(data.coord.lat,data.coord.lon);
+            getWeatherForecast(data.coord.lat,data.coord.lon);
 
         })
         .catch(function (error) {
@@ -95,7 +91,9 @@ function getWeatherForecast(lat,lon){
         return response.json();  
     })
     .then(function(data){
-    console.log(data);
+        console.log(data);
+
+
 
     })
     .catch(function (error) {
@@ -151,6 +149,15 @@ function displayHistory(newSearchCity){
     }
 }
 
+function clickFromHistoryList(event){
+    event.preventDefault();
+    var targetEvent = event.target.textContent;
+    console.log(targetEvent);
+    searchInputEl.value = targetEvent;
+    getWeatherAPI();
+}
+
+
 function start(event){
     event.preventDefault();
     
@@ -160,3 +167,5 @@ function start(event){
 
 displayHistory();
 searchFormEl.addEventListener('submit', start);
+
+searchHistoryContainerEl.addEventListener('click',clickFromHistoryList)
