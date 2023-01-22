@@ -8,3 +8,81 @@
     font-weight: bold;
     margin-bottom: 5px;
 }
+
+h1{
+    font-size: 25px;
+    font-weight: bold;
+    margin: 8px;
+}
+
+p{
+    font-size: 20px;
+    margin: 5px;
+}
+
+ol{
+    padding: 0px;
+}
+
+li{
+    list-style: none;
+}
+
+.forecast-ol{
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+}
+
+#weather-info{
+    display: flex;
+    justify-content: space-around;
+}
+
+#search-info{
+    display: flex;
+    flex-direction: column;
+    width: 18%;
+}
+
+#weather-result{
+    width:79%;
+}
+
+#today-weather{
+    border: 2px solid rgb(128, 128, 128);
+    height: 160px;
+    padding-left: 10px;
+    margin-bottom: 40px;
+}
+
+.button{
+    width: 100%;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: rgb(15, 96, 210);
+    color: azure;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+#search-input{
+    width: 96%;
+    /* padding: 10px; */
+    height: 40px;
+}
+
+#search-city{
+    display: flex;
+    justify-content: center;
+}
+
+#search-form{
+    padding-bottom: 20px;
+    border-bottom: 3px solid rgb(8, 3, 30);
+}
+
+
+
+
+

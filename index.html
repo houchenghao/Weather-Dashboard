@@ -12,23 +12,34 @@
         Weather Dashboard
     </header>
 
-
-    <form id = "search-form">
-        <p>Search for a city</p>
-        <input id = "search-input" type="text" placeholder="Search"> <br>
-        <button>Search</button>
+    <section id = "weather-info">
+        <section id = "search-info">
+            <form id = "search-form">
+                <div id = "search-city">
+                    <h1>Search for a city<h1>
+                </div>
+                <input id = "search-input" type="text" placeholder="Search City">
+                <button class = "button">Search</button>
+            </form>
         
-    </form>
-
-    <section id = "search-history">   
+            <section id = "search-history">   
+            </section>
+        </section>
+    
+        <section id = "weather-result">
+            <section id = "today-weather">
+            </section>
+        
+            <section id = "forecast-weather">
+                <h1> 5-Day Forecast </h1> 
+                <section id = "forcast-container"></section>  
+            </section>
+        </section>
     </section>
+    
 
-    <section id = "today-weather">
-    </section>
 
-    <section id = "forecast-weather">
-        <p> 5-Day Forecast </p>   
-    </section>
+
 
     <script src="./assets/js/script.js"></script> 
     <script

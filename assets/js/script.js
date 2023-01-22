@@ -6,6 +6,7 @@ const searchFormEl = document.querySelector("#search-form");
 const searchHistoryContainerEl = document.querySelector("#search-history");
 const todayWeatherEl = document.querySelector("#today-weather");
 const forecastWeatherEl = document.querySelector("#forecast-weather")
+const forecastContainerEl = document.querySelector("#forcast-container")
                                                 
 
 const localStorageKey = "searchHistory";
@@ -24,7 +25,7 @@ function getWeatherAPI(){
             return response.json();  
         })
         .then(function(data){
-             //console.log(data);
+            //console.log(data);
             // console.log(data.name);
             // console.log(data.dt);
             // console.log(data.weather[0].icon);
@@ -38,7 +39,7 @@ function getWeatherAPI(){
                 todayWeatherEl.removeChild(todayWeatherEl.lastElementChild);
             }
             
-            const todayCityDateEl = document.createElement("p");
+            const todayCityDateEl = document.createElement("h1");
             const todayTempEl = document.createElement("p");
             const todayWindEl = document.createElement("p");
             const todayHumidityEl = document.createElement("p");
@@ -46,22 +47,23 @@ function getWeatherAPI(){
 
 
             weatherImageEl.setAttribute("src",`https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`);
-            weatherImageEl.setAttribute("width","50px");
-            weatherImageEl.setAttribute("height","50px");
+            weatherImageEl.setAttribute("width","40px");
+            //weatherImageEl.setAttribute("height","50px");
 
             
             todayCityDateEl.textContent = `${data.name} ${date}`;
-            todayTempEl.textContent = `${data.main.temp} °F`;
-            todayWindEl.textContent = `${data.wind.speed} MPH`
-            todayHumidityEl.textContent = `${data.main.humidity} %`
+            todayTempEl.textContent = `Temp: ${data.main.temp} °F`;
+            todayWindEl.textContent = `Wind: ${data.wind.speed} MPH`
+            todayHumidityEl.textContent = `Humidity: ${data.main.humidity} %`
 
             todayCityDateEl.append(weatherImageEl);
 
             todayWeatherEl.appendChild(todayCityDateEl);
-            //todayWeatherEl.appendChild(weatherImageEl);
             todayWeatherEl.appendChild(todayTempEl);
             todayWeatherEl.appendChild(todayWindEl);
             todayWeatherEl.appendChild(todayHumidityEl);
+
+            //todayWeatherEl.style.border = "1px solid rgb(128, 128, 128)"
 
             //console.log(data.coord);
             //console.log(data.coord.lon);
@@ -70,7 +72,7 @@ function getWeatherAPI(){
             displayHistory(data.name);
 
             getWeatherForecast(data.coord.lat,data.coord.lon);
-
+            
         })
         .catch(function (error) {
             console.error(error);
@@ -89,28 +91,29 @@ function getWeatherForecast(lat,lon){
         return response.json();  
     })
     .then(function(data){
-        console.log(data.list);
-        //console.log(data.list.length);
-        //console.log(data.list[data.list.length - 1]);
-        
-        //const secondsAday = 86400;
-        const arrayInterval = data.list.length/5; //8
-        
+            console.log(data.list);
 
-        //console.log(arrayInterval)
-
+            const arrayInterval = data.list.length/5; //8
+            //console.log(arrayInterval)
             // console.log(data.dt);
             // console.log(data.weather[0].icon);
             // console.log(data.main.temp);
             // console.log(data.wind.speed);
             // console.log(data.main.humidity);
+            
+            while(forecastContainerEl.lastElementChild){
+                forecastContainerEl.removeChild(forecastContainerEl.lastElementChild);
+            }
 
-        const forecastListEl = document.createElement("ol");
+            const forecastListEl = document.createElement("ol");          
+            forecastListEl.classList.add("forecast-ol");
+
          for (var i = data.list.length-1; i >= 0; i=i-arrayInterval){
             console.log(i);
 
             const date = dayjs.unix(data.list[i].dt).format('D/M/YYYY')
 
+            const infoContainer = document.createElement("div");
             const listEl = document.createElement("li");
             const forecastDateEl = document.createElement("p");
             const forecastTemp = document.createElement("p");
@@ -118,29 +121,36 @@ function getWeatherForecast(lat,lon){
             const forecastHumidityEl = document.createElement("p");
             const forecastWeatherConditionImageEl = document.createElement("img");
 
-
             forecastDateEl.textContent = `${date}`;
-            forecastTemp.textContent = `${data.list[i].main.temp} °F`;
-            forecastWindEl.textContent = `${data.list[i].wind.speed} MPH`;
-            forecastHumidityEl.textContent = `${data.list[i].main.humidity} %` ;
-            forecastWeatherConditionImageEl.setAttribute("src",`https://openweathermap.org/img/wn/${data.list[i].weather[0].icon}@2x.png`);
+            forecastTemp.textContent = `Temp: ${data.list[i].main.temp} °F`;
+            forecastWindEl.textContent = `Wind: ${data.list[i].wind.speed} MPH`;
+            forecastHumidityEl.textContent = `Humidity: ${data.list[i].main.humidity} %`;
+            
+            //forecastDateEl.setAttribute("style","font-weight:bold");
+            //forecastWeatherConditionImageEl.setAttribute("src",`https://openweathermap.org/img/wn/${data.list[i].weather[0].icon}@2x.png`);
 
+            forecastDateEl.style.fontSize = "25px"
+            infoContainer.style.width = "19%"
+            forecastDateEl.style.fontWeight = "bold";
+            forecastWeatherConditionImageEl.src = `https://openweathermap.org/img/wn/${data.list[i].weather[0].icon}@2x.png`;
+            forecastWeatherConditionImageEl.style.width = "40px";
+            //forecastWeatherConditionImageEl.setAttribute("width","40px");
+
+            listEl.style.backgroundColor = "rgb(10, 25, 94)";
+            listEl.style.color = "rgb(240, 255, 255)";
+            
             listEl.appendChild(forecastDateEl);
             listEl.appendChild(forecastWeatherConditionImageEl);
             listEl.appendChild(forecastTemp);
             listEl.appendChild(forecastWindEl);
             listEl.appendChild(forecastHumidityEl);
 
-            forecastListEl.append(listEl);
-            forecastWeatherEl.appendChild(forecastListEl);
-
+            infoContainer.appendChild(listEl);
+            forecastListEl.appendChild(infoContainer);
+            forecastContainerEl.appendChild(forecastListEl);
          }
-        
-
-
-
-
-    })
+        }
+    )
     .catch(function (error) {
         console.error(error);
       })    
@@ -191,6 +201,12 @@ function displayHistory(newSearchCity){
         liEl.appendChild(btnEl);
         searchlistEl.appendChild(liEl);
         searchHistoryContainerEl.appendChild(searchlistEl);
+
+        btnEl.style.width = "100%";
+        btnEl.style.padding = "10px";
+        btnEl.style.marginTop = "10px";
+        btnEl.style.fontSize = "18px";
+
     }
 }
 
