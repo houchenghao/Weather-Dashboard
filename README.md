@@ -4,7 +4,12 @@ The weather dashboard allow user to check the weather data for cities and with 5
 
 ## Mock-UP
 
-![](./assets/images/screenshot.JPG)
+![](./assets/image/screenshot.PNG)
+
+## Service-side API
+
+Open Weather
+https://openweathermap.org/api
 
 ## Link
 https://houchenghao.github.io/Weather-Dashboard/
